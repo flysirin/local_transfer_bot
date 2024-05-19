@@ -1,12 +1,12 @@
-import qrcode
-
-
-def get_qr_code(text: str, file_name: str = "qrcode.png") -> None:
-    img = qrcode.make(text)
-    img.save(file_name)
-
-
-get_qr_code(f"https://t.me/Moon_Party_Bot?start={1}")
+# import qrcode
+#
+#
+# def get_qr_code(text: str, file_name: str = "qrcode.png") -> None:
+#     img = qrcode.make(text)
+#     img.save(file_name)
+#
+#
+# get_qr_code(f"https://t.me/Moon_Party_Bot?start={1}")
 
 # for i in range(1, 16):
 #     get_qr_code(f"https://t.me/DolinaTransferBot?start={i}",
