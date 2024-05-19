@@ -2,15 +2,19 @@ from sqlalchemy import (MetaData, Table, Integer, String,
                         Column, Text, DateTime, Boolean,
                         ForeignKey, create_engine)
 from sqlalchemy.orm import declarative_base
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from enum import Enum
+from config_data.config import TIME_ZONE
 
 engine = create_engine('sqlite:///users_sqlite.db')
 metadata = MetaData()
 
 Base = declarative_base()
 
-# timezone
+delta_time = timedelta(hours=int(TIME_ZONE))
+time_zone = timezone(delta_time)
+
+
 class OrderStatus(Enum):
     FIND = 'find'
     DRIVE = 'drive'
@@ -46,7 +50,7 @@ class Orders(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     location_id = Column(Integer, nullable=False)
     driver_id = Column(Integer, ForeignKey('drivers.driver_id'))
-    date_create = Column(DateTime, default=datetime.now(timezone.utc))
+    date_create = Column(DateTime, default=datetime.now(time_zone))
     user_id = Column(Integer, ForeignKey('users.user_id'))
     username = Column(String, nullable=False)
     status_drive = Column(String, default=OrderStatus.FIND.value)
