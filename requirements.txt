@@ -1,0 +1,5 @@
+aiogram==3.0.0b6
+environs==9.5.0
+qrcode==7.4.2
+SQLAlchemy==2.0.29
+aiohttp_socks==0.8.4
