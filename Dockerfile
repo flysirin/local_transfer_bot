@@ -5,7 +5,6 @@ ENV PYTHONUNBUFFERED TRUE
 RUN apk add --no-cache curl
 
 RUN pip3 install --no-cache-dir aiogram==3.0.0b6
-RUN pip3 install  --no-cache-dir environs==9.5.0
 RUN pip3 install  --no-cache-dir SQLAlchemy==2.0.29
 RUN pip3 install  --no-cache-dir aiohttp_socks==0.8.4
 

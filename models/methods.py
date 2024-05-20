@@ -93,20 +93,13 @@ def get_location_id_from_user_id(session: Session, user_id: int) -> int:
 
 @database_action
 def get_free_driver_id_from_db(session: Session) -> int:
-    driver_ids = session.query(Drivers.driver_id).filter_by(is_available=True).all()
-    driver_ids_from_orders = (session.query(Orders.driver_id).group_by(Orders.driver_id).
-                              order_by(count(Orders.driver_id)).all())
-
-    driver_ids = [drivers_id[0] for drivers_id in driver_ids if drivers_id[0]]
-    driver_ids_from_orders = [drivers_id[0] for drivers_id in driver_ids_from_orders if drivers_id[0]]
-
-    for driver_id in driver_ids_from_orders:
-        if driver_id in driver_ids:
-            return driver_id
-
-    for driver_id in driver_ids:
-        if driver_id not in driver_ids_from_orders:
-            return driver_id
+    drivers_list = (session.query(Drivers.driver_id, count(Orders.date_create))
+                    .outerjoin(Orders, (Orders.driver_id == Drivers.driver_id) & (Drivers.is_available == 1))
+                    .group_by(Drivers.driver_id)
+                    .order_by(count(Orders.date_create))
+                    .all())
+    if drivers_list:
+        return drivers_list[0][0]
 
 
 @database_action

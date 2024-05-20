@@ -1,12 +1,9 @@
-from environs import Env
-import os
+from os import environ
 
-env = Env()
-env.read_env()
 
-BOT_TOKEN = env("BOT_TOKEN")
-ADMIN_IDS = env("ADMIN_IDS")
+BOT_TOKEN = environ.get("BOT_TOKEN", None)
+ADMIN_IDS = environ.get("ADMIN_IDS", None)
 
-BOT_PROXY = os.environ.get("BOT_PROXY", None)
-TIME_ZONE = os.environ.get("TIME_ZONE", 5)  # utc +
+BOT_PROXY = environ.get("BOT_PROXY", None)
+TIME_ZONE = environ.get("TIME_ZONE", 5)  # utc +
 
