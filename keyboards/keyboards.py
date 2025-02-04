@@ -17,6 +17,7 @@ def order_driver_inline_kb(user_id) -> InlineKeyboardMarkup:
                                          callback_data=f"_order_confirm_{user_id}")
     reject = InlineKeyboardButton(text=HOST_BUTTONS["reject"],
                                   callback_data=f"_reject_{user_id}")
+
     keyboard = InlineKeyboardMarkup(inline_keyboard=[[order_confirm],
                                                      [reject],
                                                      ], )
@@ -43,14 +44,17 @@ def admin_inline_kb() -> InlineKeyboardMarkup:
                                      callback_data=f"add_admin")
     view_orders = InlineKeyboardButton(text=ADMIN_BUTTONS["view_orders"],
                                        callback_data=f"view_orders")
+    attach_name_to_id = InlineKeyboardButton(text=ADMIN_BUTTONS["attach_name_to_id"],
+                                             callback_data=F"attach_name_to_id")
     remove_admin = InlineKeyboardButton(text=ADMIN_BUTTONS["remove_admin"],
                                         callback_data="remove_admin")
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=[[add_driver],
                                                      [remove_driver],
+                                                     [attach_name_to_id],
+                                                     [view_orders],
                                                      [add_admin],
                                                      [remove_admin],
-                                                     [view_orders],
                                                      ], )
     return keyboard
 
@@ -69,3 +73,11 @@ def remove_driver_inline_kb(drivers_names: list, width: int = 1) -> InlineKeyboa
     kb_builder.row(*buttons, width=width)  # unpack button's list to builder by method row with param width
 
     return kb_builder.as_markup()  # return object inline kb
+
+
+def cancel_inline_kb() -> InlineKeyboardMarkup:
+    cancel = InlineKeyboardButton(text=ADMIN_BUTTONS["cancel"],
+                                  callback_data=f"##cancel##operation##")
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[[cancel],
+                                                     ])
+    return keyboard

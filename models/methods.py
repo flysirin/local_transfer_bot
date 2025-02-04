@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.sql.functions import count
 from datetime import datetime
 
-from models.create_db import Drivers, Users, BannedUsers, Orders, Admin, OrderStatus
+from models.create_db import Drivers, Users, BannedUsers, Orders, Admin, OrderStatus, Locations
 
 engine = create_engine('sqlite:///users_sqlite.db')
 
@@ -94,10 +94,10 @@ def get_location_id_from_user_id(session: Session, user_id: int) -> int:
 @database_action
 def get_free_driver_id_from_db(session: Session) -> int:
     driver = (session.query(Drivers.driver_id, count(Orders.date_create))
-                    .outerjoin(Orders, (Orders.driver_id == Drivers.driver_id) & (Drivers.is_available == 1))
-                    .group_by(Drivers.driver_id)
-                    .order_by(count(Orders.date_create))
-                    .first())
+              .outerjoin(Orders, (Orders.driver_id == Drivers.driver_id) & (Drivers.is_available == 1))
+              .group_by(Drivers.driver_id)
+              .order_by(count(Orders.date_create))
+              .first())
     if driver:
         return driver[0]
 
@@ -163,3 +163,30 @@ def stat_orders(session: Session) -> str:
         username, driver_name, date, status = order
         result += f'🧑{username}🚓{driver_name}🕐{date.strftime("%d %H:%M")}-{status_emo.get(status, None)}\n'
     return result
+
+
+@database_action
+def update_location(session: Session, location_id: int, location_name: str) -> None:
+    location = session.query(Locations).filter_by(id=location_id).first()
+    if location:
+        location.location_name = location_name
+        session.add(location)
+    else:
+        location = Locations(id=location_id, location_name=location_name)
+        session.add(location)
+
+
+@database_action
+def get_locations(session: Session) -> list[str]:
+    locations = session.query(Locations).order_by(Locations.id).all()
+    list_locations = [f"{location.id} - {location.location_name}" for location in locations]
+    return list_locations
+
+
+@database_action
+def get_location_name(session: Session, location_id) -> str:
+    location = session.query(Locations).filter_by(id=location_id).first()
+    if location:
+        return location.location_name
+
+

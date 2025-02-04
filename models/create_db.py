@@ -1,7 +1,7 @@
 from sqlalchemy import (MetaData, Table, Integer, String,
                         Column, Text, DateTime, Boolean,
                         ForeignKey, create_engine)
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import declarative_base, relationship
 from datetime import datetime, timedelta, timezone
 from enum import Enum
 from config_data.config import TIME_ZONE
@@ -48,12 +48,22 @@ class Drivers(Base):
 class Orders(Base):
     __tablename__ = 'orders'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    location_id = Column(Integer, nullable=False)
+    location_id = Column(Integer, ForeignKey('locations.id'),nullable=False)
     driver_id = Column(Integer, ForeignKey('drivers.driver_id'))
     date_create = Column(DateTime, default=datetime.now(time_zone))
     user_id = Column(Integer, ForeignKey('users.user_id'))
     username = Column(String, nullable=False)
     status_drive = Column(String, default=OrderStatus.FIND.value)
+
+    location = relationship("Locations", back_populates="orders")
+
+
+class Locations(Base):
+    __tablename__ = 'locations'
+    id = Column(Integer, primary_key=True)
+    location_name = Column(String, nullable=True)
+
+    orders = relationship("Orders", back_populates="location")
 
 
 class BannedUsers(Base):

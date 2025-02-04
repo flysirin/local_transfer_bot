@@ -53,8 +53,13 @@ async def start(callback: CallbackQuery):
     if not callback.from_user.is_bot:
         bot = Bot.get_current()
         location_id = get_location_id_from_user_id(user_id)
+        location_name = get_location_name(location_id=location_id)
+        if not location_name:
+            location_name = f'{DRIVERS_LEXICON["not_set"]}'
+
         await bot.send_message(driver_id,
                                text=f'{DRIVERS_LEXICON["confirm_order"]}{location_id}\n'
+                                    f'{DRIVERS_LEXICON["location_name"]} <b>{location_name}</b>\n'
                                     f'{DRIVERS_LEXICON["user_profile"]}\n'
                                     f'https://t.me/{username}',
                                reply_markup=order_driver_inline_kb(user_id))

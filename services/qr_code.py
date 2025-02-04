@@ -1,16 +1,16 @@
-# import qrcode
+import qrcode
 #
 #
-# def get_qr_code(text: str, file_name: str = "qrcode.png") -> None:
-#     img = qrcode.make(text)
-#     img.save(file_name)
+def get_qr_code(text: str, file_name: str = "qrcode.png") -> None:
+    img = qrcode.make(text)
+    img.save(file_name)
 #
 #
 # get_qr_code(f"https://t.me/Moon_Party_Bot?start={1}")
 
-# for i in range(1, 16):
-#     get_qr_code(f"https://t.me/DolinaTransferBot?start={i}",
-#                 file_name=f"qrcode_{i}.png")
+for i in range(1, 16):
+    get_qr_code(f"https://t.me/DolinaTransferBot?start={i}",
+                file_name=f"qrcode_{i}.png")
 
 # with open('qrcode.png', 'wb') as f:
 #     f.write(get_qr_code(f"https://t.me/Moon_Party_Bot?start={51.5074}_{-0.1278}"))

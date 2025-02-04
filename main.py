@@ -25,7 +25,7 @@ async def main(bot: Bot):
                '[%(asctime)s] - %(name)s - %(message)s')
 
     logger_main_file.info("Starting bot")
-    dp = Dispatcher()  # storage=storage
+    dp = Dispatcher()  # storage=storage        
     await bot.delete_webhook(drop_pending_updates=True)
 
     dp.include_router(admin_handlers.admin_router)

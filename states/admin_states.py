@@ -14,4 +14,6 @@ class FSMAdmin(StatesGroup):
     delete_admin = State()
     view_stats = State()
 
+    attach_name_to_id = State()
+
 
